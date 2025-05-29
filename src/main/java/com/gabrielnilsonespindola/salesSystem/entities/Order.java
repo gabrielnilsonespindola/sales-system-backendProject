@@ -3,8 +3,12 @@ package com.gabrielnilsonespindola.salesSystem.entities;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+
+import com.gabrielnilsonespindola.salesSystem.entities.enums.OrderStatus;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,6 +18,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,20 +32,26 @@ public class Order implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private Instant moment;
-	private Integer orderStatus;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "tb_order_product", joinColumns = @JoinColumn(name = "tb_order"), inverseJoinColumns = @JoinColumn(name = "tb_product"))
-	List<Product> products = new ArrayList<>();
+	private OrderStatus orderStatus;
+
+	@ManyToOne
+	@JoinColumn(name = "client_id")
+	private User client;
+
+	@OneToMany(mappedBy = "id.order")
+	private Set<OrderItem> items = new HashSet<>();
 
 	public Order() {
 	}
 
-	public Order(Long id, Instant moment, Integer orderStatus) {
+	public Order(Long id, Instant moment, OrderStatus orderStatus, User client) {
 		super();
 		this.id = id;
 		this.moment = moment;
+		this.client = client;
 		this.orderStatus = orderStatus;
+		;
 	}
 
 	public Long getId() {
@@ -58,20 +70,28 @@ public class Order implements Serializable {
 		this.moment = moment;
 	}
 
-	public Integer getOrderStatus() {
+	public OrderStatus getOrderStatus() {
 		return orderStatus;
 	}
 
-	public void setOrderStatus(Integer orderStatus) {
+	public void setOrderStatus(OrderStatus orderStatus) {
 		this.orderStatus = orderStatus;
 	}
 
-	public List<Product> getProducts() {
-		return products;
+	public User getClient() {
+		return client;
 	}
 
-	public void setProducts(List<Product> products) {
-		this.products = products;
+	public void setClient(User client) {
+		this.client = client;
+	}
+
+	public Set<OrderItem> getItems() {
+		return items;
+	}
+
+	public void setItems(Set<OrderItem> items) {
+		this.items = items;
 	}
 
 	@Override
