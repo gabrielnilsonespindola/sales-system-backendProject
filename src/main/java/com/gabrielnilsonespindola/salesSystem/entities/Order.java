@@ -30,10 +30,6 @@ public class Order implements Serializable {
 
 	private OrderStatus orderStatus;
 
-	// @ManyToOne
-	// @JoinColumn(name = "user_id")
-	// private User user;
-
 	@ManyToOne
 	@JoinColumn(name = "client.id")
 	private Client client;
