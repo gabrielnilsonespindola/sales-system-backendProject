@@ -2,22 +2,17 @@ package com.gabrielnilsonespindola.salesSystem.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 import com.gabrielnilsonespindola.salesSystem.entities.enums.OrderStatus;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -36,8 +31,12 @@ public class Order implements Serializable {
 	private OrderStatus orderStatus;
 
 	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
+	
+	@ManyToOne
 	@JoinColumn(name = "client_id")
-	private User client;
+	private Client client;
 
 	@OneToMany(mappedBy = "id.order")
 	private Set<OrderItem> items = new HashSet<>();
@@ -45,11 +44,11 @@ public class Order implements Serializable {
 	public Order() {
 	}
 
-	public Order(Long id, Instant moment, OrderStatus orderStatus, User client) {
+	public Order(Long id, Instant moment, OrderStatus orderStatus, User user) {
 		super();
 		this.id = id;
 		this.moment = moment;
-		this.client = client;
+		this.user = user;
 		this.orderStatus = orderStatus;
 		;
 	}
@@ -78,12 +77,12 @@ public class Order implements Serializable {
 		this.orderStatus = orderStatus;
 	}
 
-	public User getClient() {
-		return client;
+	public User getUser() {
+		return user;
 	}
 
-	public void setClient(User client) {
-		this.client = client;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public Set<OrderItem> getItems() {

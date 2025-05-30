@@ -1,6 +1,5 @@
 package com.gabrielnilsonespindola.salesSystem.entities;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -16,33 +15,32 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_user")
-public class User implements Serializable {
-	private static final long serialVersionUID = 1L;
-
+@Table(name = "tb_client")
+public class Client {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-
+	private Integer cpf;
+	
 	@Column(unique = true)
 	private String email;
-	private String password;
-
+	
 	@JsonIgnore
-	@OneToMany(mappedBy = "user.id")
+	@OneToMany(mappedBy = "client.id")
 	private List<Order> order = new ArrayList<>();
-
-	public User() {
+	
+	public Client() {
 	}
 
-	public User(Long id, String name, String email, String password) {
+	public Client(Long id, String name, Integer cpf, String email, List<Order> order) {
 		super();
 		this.id = id;
 		this.name = name;
+		this.cpf = cpf;
 		this.email = email;
-		this.password = password;
-
+		this.order = order;
 	}
 
 	public Long getId() {
@@ -61,6 +59,14 @@ public class User implements Serializable {
 		this.name = name;
 	}
 
+	public Integer getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(Integer cpf) {
+		this.cpf = cpf;
+	}
+
 	public String getEmail() {
 		return email;
 	}
@@ -69,12 +75,12 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
-	public String getPassword() {
-		return password;
+	public List<Order> getOrder() {
+		return order;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setOrder(List<Order> order) {
+		this.order = order;
 	}
 
 	@Override
@@ -90,9 +96,11 @@ public class User implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		Client other = (Client) obj;
 		return Objects.equals(id, other.id);
 	}
+	
+	
 	
 	
 
