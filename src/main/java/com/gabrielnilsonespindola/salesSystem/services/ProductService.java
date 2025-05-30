@@ -3,13 +3,13 @@ package com.gabrielnilsonespindola.salesSystem.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gabrielnilsonespindola.salesSystem.repositories.UserRepository;
+import com.gabrielnilsonespindola.salesSystem.repositories.ProductRepository;
 
 @Service
-public class UserService {
+public class ProductService {
 	
 	@Autowired
-	private UserRepository userRepository;
+	private ProductRepository productRepository;
 	
 	
 	
