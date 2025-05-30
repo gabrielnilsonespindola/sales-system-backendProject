@@ -25,7 +25,7 @@ public class Product implements Serializable {
 	private Double stockQuantity;
 	
 	@OneToMany(mappedBy = "id.product")
-	private Set<OrderItem> orderitem = new HashSet<>();
+	private Set<OrderItem> orderitems = new HashSet<>();
 	
 	public Product () {
 	}
@@ -68,6 +68,15 @@ public class Product implements Serializable {
 
 	public void setStockQuantity(Double stockQuantity) {
 		this.stockQuantity = stockQuantity;
+	}
+	
+	
+	public Set<OrderItem> getOrderitems() {
+		return orderitems;
+	}
+
+	public void setOrderitems(Set<OrderItem> orderitems) {
+		this.orderitems = orderitems;
 	}
 
 	@Override

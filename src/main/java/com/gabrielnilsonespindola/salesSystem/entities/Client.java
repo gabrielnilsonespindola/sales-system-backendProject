@@ -17,30 +17,29 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "tb_client")
 public class Client {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
 	private Integer cpf;
-	
+
 	@Column(unique = true)
 	private String email;
-	
+
 	@JsonIgnore
-	@OneToMany(mappedBy = "client.id")
-	private List<Order> order = new ArrayList<>();
-	
+	@OneToMany(mappedBy = "client")
+	private List<Order> orders = new ArrayList<>();
+
 	public Client() {
 	}
 
-	public Client(Long id, String name, Integer cpf, String email, List<Order> order) {
+	public Client(Long id, String name, Integer cpf, String email) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.cpf = cpf;
 		this.email = email;
-		this.order = order;
 	}
 
 	public Long getId() {
@@ -76,11 +75,11 @@ public class Client {
 	}
 
 	public List<Order> getOrder() {
-		return order;
+		return orders;
 	}
 
 	public void setOrder(List<Order> order) {
-		this.order = order;
+		this.orders = order;
 	}
 
 	@Override
@@ -99,9 +98,5 @@ public class Client {
 		Client other = (Client) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
-	
-	
 
 }

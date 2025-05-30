@@ -29,9 +29,9 @@ public class User implements Serializable {
 	private String email;
 	private String password;
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "user.id")
-	private List<Order> order = new ArrayList<>();
+	//@JsonIgnore
+	//@OneToMany(mappedBy = "user.id")
+	//private List<Order> order = new ArrayList<>();
 
 	public User() {
 	}

@@ -17,18 +17,16 @@ public class OrderItem implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	
 	@Autowired
 	@EmbeddedId
 	private OrderItemPK id;
-	
+
 	private Double price;
 	private Integer quantity;
-	
-	
+
 	public OrderItem() {
 	}
-	
+
 	public OrderItem(Order order, Product product, Integer quantity, Double price) {
 		super();
 		id.setOrder(order);
@@ -77,7 +75,5 @@ public class OrderItem implements Serializable {
 		OrderItem other = (OrderItem) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
 
 }
