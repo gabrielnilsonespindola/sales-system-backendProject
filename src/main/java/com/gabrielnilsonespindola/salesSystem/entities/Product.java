@@ -22,7 +22,7 @@ public class Product implements Serializable {
 	private Long id;
 	private String name;
 	private Double price;
-	private Double stockQuantity;
+	private Integer stockQuantity;
 	
 	@OneToMany(mappedBy = "id.product")
 	private Set<OrderItem> orderitems = new HashSet<>();
@@ -30,7 +30,7 @@ public class Product implements Serializable {
 	public Product () {
 	}
 
-	public Product(Long id, String name, Double price, Double stockQuantity) {
+	public Product(Long id, String name, Double price, Integer stockQuantity) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -62,11 +62,11 @@ public class Product implements Serializable {
 		this.price = price;
 	}
 
-	public Double getStockQuantity() {
+	public Integer getStockQuantity() {
 		return stockQuantity;
 	}
 
-	public void setStockQuantity(Double stockQuantity) {
+	public void setStockQuantity(Integer stockQuantity) {
 		this.stockQuantity = stockQuantity;
 	}
 	
