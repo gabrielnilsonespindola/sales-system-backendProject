@@ -1,5 +1,6 @@
 package com.gabrielnilsonespindola.salesSystem.entities;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -22,7 +23,7 @@ public class Client {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	private Integer cpf;
+	private BigInteger cpf;
 
 	@Column(unique = true)
 	private String email;
@@ -34,7 +35,7 @@ public class Client {
 	public Client() {
 	}
 
-	public Client(Long id, String name, Integer cpf, String email) {
+	public Client(Long id, String name, BigInteger cpf, String email) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -58,11 +59,11 @@ public class Client {
 		this.name = name;
 	}
 
-	public Integer getCpf() {
+	public BigInteger getCpf() {
 		return cpf;
 	}
 
-	public void setCpf(Integer cpf) {
+	public void setCpf(BigInteger cpf) {
 		this.cpf = cpf;
 	}
 

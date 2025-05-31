@@ -1,6 +1,9 @@
 package com.gabrielnilsonespindola.salesSystem.dto;
 
 import java.io.Serializable;
+import java.math.BigInteger;
+
+import com.gabrielnilsonespindola.salesSystem.entities.Client;
 
 public class ClientDTO implements Serializable {
 
@@ -8,18 +11,17 @@ public class ClientDTO implements Serializable {
 
 	private Long id;
 	private String name;
-	private Integer cpf;
+	private BigInteger cpf;
 	private String email;
 	
 	public ClientDTO() {
 	}
 
-	public ClientDTO(Long id, String name, Integer cpf, String email) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.cpf = cpf;
-		this.email = email;
+	public ClientDTO(Client client) {
+		id = client.getId();
+		name = client.getName();
+		cpf = client.getCpf();
+		email = client.getEmail();
 	}
 
 	public Long getId() {
@@ -38,11 +40,11 @@ public class ClientDTO implements Serializable {
 		this.name = name;
 	}
 
-	public Integer getCpf() {
+	public BigInteger getCpf() {
 		return cpf;
 	}
 
-	public void setCpf(Integer cpf) {
+	public void setCpf(BigInteger cpf) {
 		this.cpf = cpf;
 	}
 
