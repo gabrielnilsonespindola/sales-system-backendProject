@@ -11,7 +11,7 @@ public class ClientDTO implements Serializable {
 
 	private Long id;
 	private String name;
-	private BigInteger cpf;
+	private String cpf;
 	private String email;
 	
 	public ClientDTO() {
@@ -40,11 +40,11 @@ public class ClientDTO implements Serializable {
 		this.name = name;
 	}
 
-	public BigInteger getCpf() {
+	public String getCpf() {
 		return cpf;
 	}
 
-	public void setCpf(BigInteger cpf) {
+	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
 

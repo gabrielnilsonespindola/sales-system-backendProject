@@ -23,7 +23,9 @@ public class Client {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	private BigInteger cpf;
+	
+	@Column(unique = true)
+	private String cpf;
 
 	@Column(unique = true)
 	private String email;
@@ -35,7 +37,7 @@ public class Client {
 	public Client() {
 	}
 
-	public Client(Long id, String name, BigInteger cpf, String email) {
+	public Client(Long id, String name, String cpf, String email) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -59,11 +61,11 @@ public class Client {
 		this.name = name;
 	}
 
-	public BigInteger getCpf() {
+	public String getCpf() {
 		return cpf;
 	}
 
-	public void setCpf(BigInteger cpf) {
+	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
 

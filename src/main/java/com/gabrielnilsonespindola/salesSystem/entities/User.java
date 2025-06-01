@@ -28,11 +28,7 @@ public class User implements Serializable {
 	@Column(unique = true)
 	private String email;
 	private String password;
-
-	//@JsonIgnore
-	//@OneToMany(mappedBy = "user.id")
-	//private List<Order> order = new ArrayList<>();
-
+	
 	public User() {
 	}
 
