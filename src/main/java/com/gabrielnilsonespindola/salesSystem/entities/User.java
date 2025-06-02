@@ -6,6 +6,10 @@ import java.util.Objects;
 import java.util.Set;
 
 import org.hibernate.annotations.CascadeType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import com.gabrielnilsonespindola.salesSystem.resources.dto.LoginRequest;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,29 +29,32 @@ public class User implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "user_id")
 	private Long id;
 	private String name;
 
 	@Column(unique = true)
 	private String email;
+
+	@Column(unique = true)
+	private String username;
+
 	private String password;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "tb_user_role" ,
-	joinColumns = @JoinColumn (name = "user_id") ,
-	inverseJoinColumns = @JoinColumn(name = "role_id")
-	)
-	Set<Role> roles = new HashSet<>();
+	@JoinTable(name = "tb_user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles;
 
 	public User() {
 	}
 
-	public User(Long id, String name, String email, String password) {
+	public User(Long id, String name, String email,String password, String username) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.password = password;
+		this.username = username;
 
 	}
 
@@ -75,12 +82,29 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	public String getPassword() {
 		return password;
 	}
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
 
 	@Override
@@ -100,4 +124,9 @@ public class User implements Serializable {
 		return Objects.equals(id, other.id);
 	}
 
+	
+	public boolean isLoginCorrect(LoginRequest loginRequest , PasswordEncoder passwordEncoder) {
+		return passwordEncoder.matches(loginRequest.password(), this.password);
+	}
+	
 }

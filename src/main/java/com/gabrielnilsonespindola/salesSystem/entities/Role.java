@@ -21,15 +21,15 @@ public class Role implements Serializable {
 	@Column(name = "role_id")
 	private Long roleId;
 
-	private String roleName;
+	private String name;
 	
 	public Role() {
 	}
 
-	public Role(Long roleId, String roleName) {
+	public Role(Long roleId, String name) {
 		super();
 		this.roleId = roleId;
-		this.roleName = roleName;
+		this.name = name;
 	}
 
 	public Long getRoleid() {
@@ -40,17 +40,17 @@ public class Role implements Serializable {
 		this.roleId = roleid;
 	}
 
-	public String getRoleName() {
-		return roleName;
+	public String getName() {
+		return name;
 	}
 
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(roleName);
+		return Objects.hash(name);
 	}
 
 	@Override
@@ -62,14 +62,14 @@ public class Role implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Role other = (Role) obj;
-		return Objects.equals(roleName, other.roleName);
+		return Objects.equals(name, other.name);
 	}
 	
 	
 	 public enum Values {
 
-	        ADMIN(1L),
-	        BASIC(2L);
+	        admin(1L),
+	        basic(2L);
 
 	        long roleId;
 
