@@ -1,8 +1,18 @@
 package com.gabrielnilsonespindola.salesSystem.services;
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import com.gabrielnilsonespindola.salesSystem.dto.UserDTO;
+import com.gabrielnilsonespindola.salesSystem.entities.Role;
 import com.gabrielnilsonespindola.salesSystem.entities.User;
+import com.gabrielnilsonespindola.salesSystem.repositories.RoleRepository;
 import com.gabrielnilsonespindola.salesSystem.repositories.UserRepository;
 
 @Service
@@ -11,6 +21,29 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-	private User user;
+	@Autowired
+	private RoleRepository roleRepository;
+
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+	public User newUser(UserDTO dto) {
+
+		var basicRole = roleRepository.findByName(Role.Values.basic.name());
+
+		var userFromDb = userRepository.findByUsername(dto.getUsername());
+		if (userFromDb.isPresent()) {
+			throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+		var user = new User();
+		user.setName(dto.getName());
+		user.setEmail(dto.getEmail());
+		user.setUsername(dto.getUsername());
+		user.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
+		user.setRoles(Set.of(basicRole));
+
+		return userRepository.save(user);
+
+	}
 
 }
