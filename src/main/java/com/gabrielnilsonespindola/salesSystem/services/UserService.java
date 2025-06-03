@@ -1,5 +1,6 @@
 package com.gabrielnilsonespindola.salesSystem.services;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,10 @@ public class UserService {
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+	public List<User> findAll() {
+		return userRepository.findAll();
+	}
 
 	public User newUser(UserDTO dto) {
 

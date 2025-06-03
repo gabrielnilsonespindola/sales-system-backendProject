@@ -1,6 +1,7 @@
 package com.gabrielnilsonespindola.salesSystem.resources;
 
 import java.time.Instant;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gabrielnilsonespindola.salesSystem.entities.Role;
 import com.gabrielnilsonespindola.salesSystem.repositories.UserRepository;
 import com.gabrielnilsonespindola.salesSystem.resources.dto.LoginRequest;
 import com.gabrielnilsonespindola.salesSystem.resources.dto.LoginResponse;
@@ -45,6 +47,12 @@ public class TokenController {
 	        	throw new BadCredentialsException("user or password is invalid");
 	        }
 	        
+	        var scopes = user.get().getRoles()
+	        		.stream()
+	        		.map(Role::getName)
+	        		.collect(Collectors.joining(" "));
+	        				
+	        
 	        var now = Instant.now();
 	        var expiresIn = 300L;
 	        
@@ -53,6 +61,7 @@ public class TokenController {
 	        		.subject(user.get().getId().toString())
 	        		.issuedAt(now)
 	        		.expiresAt(now.plusSeconds(expiresIn))
+	        		.claim("scope", scopes)
 	                .build();
 	        
 	        var  jwtValue = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
