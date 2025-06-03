@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +26,7 @@ public class ProductResource {
 	private ProductService productService;
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('SCOPE_admin') or hasAuthority('SCOPE_basic') ")
 	public ResponseEntity<List<ProductDTO>> findAll() {
 		List<Product> list = productService.findAll();
 		List<ProductDTO> listDto = list.stream().map(x -> new ProductDTO(x)).collect(Collectors.toList());
@@ -32,12 +34,14 @@ public class ProductResource {
 	}
 
 	@GetMapping(value = "/{id}")
+	@PreAuthorize("hasAuthority('SCOPE_admin') or hasAuthority('SCOPE_basic') ")
 	public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
 		Product obj = productService.findById(id);
 		return ResponseEntity.ok().body(new ProductDTO(obj));
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('SCOPE_admin')")
 	public ResponseEntity<ProductDTO> insertProduct(@RequestBody ProductDTO objDto) {
 		Product obj = productService.fromDTO(objDto);
 		obj = productService.insertProduct(obj);

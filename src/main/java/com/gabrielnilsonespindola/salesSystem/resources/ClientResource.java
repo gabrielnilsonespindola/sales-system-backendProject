@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,8 @@ import com.gabrielnilsonespindola.salesSystem.dto.ClientDTO;
 import com.gabrielnilsonespindola.salesSystem.entities.Client;
 import com.gabrielnilsonespindola.salesSystem.services.ClientService;
 
+import jakarta.transaction.Transactional;
+
 @RestController
 @RequestMapping(value = "/clients")
 public class ClientResource {
@@ -25,6 +28,7 @@ public class ClientResource {
 	private ClientService clientService;
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('SCOPE_admin') or hasAuthority('SCOPE_basic') ")
 	public ResponseEntity<List<ClientDTO>> findAll() {
 		List<Client> list = clientService.findAll();
 		List<ClientDTO> listDto = list.stream().map(x -> new ClientDTO(x)).collect(Collectors.toList());
@@ -32,14 +36,17 @@ public class ClientResource {
 	}
 
 	@GetMapping(value = "/{id}")
+	@PreAuthorize("hasAuthority('SCOPE_admin') or hasAuthority('SCOPE_basic') ")
 	public ResponseEntity<ClientDTO> findById(@PathVariable Long id) {
 		Client obj = clientService.findById(id);
 		return ResponseEntity.ok().body(new ClientDTO(obj));
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> registerClient(@RequestBody ClientDTO dto) {
-		String cpf = dto.getCpf();
+	@PreAuthorize("hasAuthority('SCOPE_admin') or hasAuthority('SCOPE_basic') ")
+	@Transactional
+	public ResponseEntity<Void> registerClient(@RequestBody ClientDTO dto , String cpf) {
+		String cpfObj = dto.getCpf();
 		Client obj = clientService.registerClient(dto, cpf);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();

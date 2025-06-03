@@ -50,7 +50,7 @@ public class ClientService {
 		}
 	}
 
-	@Transactional
+	
 	public Client registerClient(ClientDTO objDtO, String cpf) {
 
 		if (!validation(cpf)) {
@@ -58,7 +58,6 @@ public class ClientService {
 		} 
 		else {
 			Client client = new Client();
-			client.setId(objDtO.getId());
 			client.setName(objDtO.getName());
 			client.setCpf(cpf);
 			client.setEmail(objDtO.getEmail());
