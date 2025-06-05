@@ -9,3 +9,4 @@ INSERT INTO tb_product (name, price , stock_Quantity) VALUES ('Fogão', '250.0' 
 INSERT INTO tb_client (name, cpf , email) VALUES ('Gabriel', '09514599999' , 'gabriel@gmail.com');
 INSERT INTO tb_client (name, cpf , email) VALUES ('Max', '54554934554' , 'max@gmail.com');
 INSERT INTO tb_client (name, cpf , email) VALUES ('Alexa', '09554322201' , 'alexa@gmail.com');
+

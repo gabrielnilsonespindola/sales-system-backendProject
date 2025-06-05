@@ -45,9 +45,9 @@ public class ClientResource {
 	@PostMapping
 	@PreAuthorize("hasAuthority('SCOPE_admin') or hasAuthority('SCOPE_basic') ")
 	@Transactional
-	public ResponseEntity<Void> registerClient(@RequestBody ClientDTO dto , String cpf) {
+	public ResponseEntity<ClientDTO> registerClient(@RequestBody ClientDTO dto , String cpf) {
 		String cpfObj = dto.getCpf();
-		Client obj = clientService.registerClient(dto, cpf);
+		Client obj = clientService.registerClient(dto, cpfObj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}

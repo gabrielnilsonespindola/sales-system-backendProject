@@ -5,15 +5,14 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.gabrielnilsonespindola.salesSystem.dto.ClientDTO;
 import com.gabrielnilsonespindola.salesSystem.entities.Client;
 import com.gabrielnilsonespindola.salesSystem.repositories.ClientRepository;
 import com.gabrielnilsonespindola.salesSystem.services.exceptions.ObjectNotFoundException;
-
 import br.com.caelum.stella.ValidationMessage;
 import br.com.caelum.stella.validation.CPFValidator;
 import jakarta.transaction.Transactional;
+
 
 @Service
 public class ClientService {
@@ -44,25 +43,27 @@ public class ClientService {
 		CPFValidator cpfValidator = new CPFValidator();
 		List<ValidationMessage> erros = cpfValidator.invalidMessagesFor(cpf);
 		if (erros.size() > 0) {
-			return false;
+		   throw new ObjectNotFoundException("CPF INVALIDO");
 		} else {
 			return true;
 		}
+
 	}
 
-	
 	public Client registerClient(ClientDTO objDtO, String cpf) {
 
-		if (!validation(cpf)) {
-			throw new ObjectNotFoundException("CPF inválido. Registro não permitido.");
-		} 
+		var cpfFromDb = clientRepository.findByCpf(objDtO.getCpf());
+
+		if (!validation(cpf) && cpfFromDb.isPresent()) {
+		   throw new ObjectNotFoundException("CPF inválido ou ja cadastrado, registro não permitido.");
+		} 			
 		else {
 			Client client = new Client();
 			client.setName(objDtO.getName());
-			client.setCpf(cpf);
+			client.setCpf(objDtO.getCpf());
 			client.setEmail(objDtO.getEmail());
 			return clientRepository.save(client);
-		}
+			}
 	}
 
 }
