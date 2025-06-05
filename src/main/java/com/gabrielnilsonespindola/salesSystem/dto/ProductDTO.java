@@ -1,7 +1,6 @@
 package com.gabrielnilsonespindola.salesSystem.dto;
 
 import java.io.Serializable;
-
 import com.gabrielnilsonespindola.salesSystem.entities.Product;
 
 public class ProductDTO implements Serializable {
@@ -54,7 +53,5 @@ public class ProductDTO implements Serializable {
 	public void setStockQuantity(Integer stockQuantity) {
 		this.stockQuantity = stockQuantity;
 	}
-	
-	
 
 }

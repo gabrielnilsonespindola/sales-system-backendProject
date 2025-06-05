@@ -1,18 +1,14 @@
 package com.gabrielnilsonespindola.salesSystem.services;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.gabrielnilsonespindola.salesSystem.dto.ProductSaleDTO;
 import com.gabrielnilsonespindola.salesSystem.entities.Order;
-import com.gabrielnilsonespindola.salesSystem.entities.OrderItem;
-import com.gabrielnilsonespindola.salesSystem.entities.Product;
 import com.gabrielnilsonespindola.salesSystem.entities.enums.OrderStatus;
 import com.gabrielnilsonespindola.salesSystem.repositories.ClientRepository;
-import com.gabrielnilsonespindola.salesSystem.repositories.OrderItemRepository;
 import com.gabrielnilsonespindola.salesSystem.repositories.OrderRepository;
 import com.gabrielnilsonespindola.salesSystem.repositories.ProductRepository;
 import com.gabrielnilsonespindola.salesSystem.services.exceptions.ObjectNotFoundException;
@@ -26,8 +22,6 @@ public class OrderService {
 	@Autowired
 	private ClientRepository clientRepository;
 
-	@Autowired
-	private OrderItemRepository orderItemRepository;
 
 	@Autowired
 	private ProductRepository productRepository;
@@ -45,41 +39,35 @@ public class OrderService {
 
 		var clientFromDb = clientRepository.findById(objDTO.getClientId());
 
-		var productFromDb = productRepository.findBystockQuantity(objDTO.getStockQuantity());
+		var productFromDb = productRepository.findById(objDTO.getProductId());
 
 		if (productFromDb.isPresent() && clientFromDb.isPresent()) {
-
-			var order = new Order();
-			order.getMoment();
-			order.setClient(objDTO.getClientId());
 			
-			var product = new Product();
+			var client = clientFromDb.get();
+			var product = productFromDb.get();
+			
+			if(product.getStockQuantity() < 1) {	
+				
+			throw new ObjectNotFoundException("Quantidade em estoque indisponivel");				
+			}			
+			
+			client.setId(objDTO.getClientId());
 			product.getId();
-			product.getName();
 			product.getPrice();
 			product.getStockQuantity();
-			
-			var orderItem = new OrderItem();
-			orderItem.setQuantity(objDTO.getQuantity());
-			orderItem.setPrice(objDTO.getPrice());			
 
-			order.setTotalValue(totalSale(objDTO));
-			// order.setTotalValue(orderItem.getPrice() * orderItem.getQuantity());
-			order.setOrderStatus(OrderStatus.WAITING_PAYMENT);			
-			return orderRepository.save(order);
+			var order = new Order();
+			order.setClient(client);
+			order.getProducts().add(product);
+
+			order.setTotalValue(product.getPrice() * objDTO.getStockQuantity());
+			order.setOrderStatus(OrderStatus.WAITING_PAYMENT);
+			order.setMoment(Instant.now());
+
+			return orderRepository.save(order);				
 		} 
 		else {
-			throw new ObjectNotFoundException("Quantidade em estoque indisponivel e/ou sem cliente cadastrado");
-		}
-
-	}
-
-	public double totalSale(ProductSaleDTO dto) {
-		OrderItem obj = new OrderItem();
-		var price = obj.getPrice();
-		var quantity = obj.getQuantity();
-		double total = price * quantity;
-		return total;
-	}
-
+			throw new ObjectNotFoundException("Produto não localizado e/ou sem cliente cadastrado");
+		}	
+	}	
 }

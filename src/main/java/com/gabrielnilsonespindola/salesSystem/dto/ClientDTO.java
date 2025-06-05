@@ -1,8 +1,6 @@
 package com.gabrielnilsonespindola.salesSystem.dto;
 
 import java.io.Serializable;
-import java.math.BigInteger;
-
 import com.gabrielnilsonespindola.salesSystem.entities.Client;
 
 public class ClientDTO implements Serializable {
@@ -13,7 +11,7 @@ public class ClientDTO implements Serializable {
 	private String name;
 	private String cpf;
 	private String email;
-	
+
 	public ClientDTO() {
 	}
 
@@ -55,6 +53,5 @@ public class ClientDTO implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	
+
 }

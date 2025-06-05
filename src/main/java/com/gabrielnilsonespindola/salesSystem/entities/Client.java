@@ -1,12 +1,9 @@
 package com.gabrielnilsonespindola.salesSystem.entities;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,7 +20,7 @@ public class Client {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	
+
 	@Column(unique = true)
 	private String cpf;
 
@@ -77,12 +74,12 @@ public class Client {
 		this.email = email;
 	}
 
-	public List<Order> getOrder() {
+	public List<Order> getOrders() {
 		return orders;
 	}
 
-	public void setOrder(List<Order> order) {
-		this.orders = order;
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
 	}
 
 	@Override

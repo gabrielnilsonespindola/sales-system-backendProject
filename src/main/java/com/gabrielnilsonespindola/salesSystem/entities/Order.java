@@ -5,16 +5,16 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
 import com.gabrielnilsonespindola.salesSystem.entities.enums.OrderStatus;
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -31,23 +31,26 @@ public class Order implements Serializable {
 
 	private OrderStatus orderStatus;
 
-	@ManyToOne
-	@JoinColumn(name = "client.id")
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "client_id")
 	private Client client;
 
-	@OneToMany(mappedBy = "id.order")
-	private Set<OrderItem> items = new HashSet<>();
+	@ManyToMany(cascade = CascadeType.PERSIST)
+	@JoinTable(name = "tb_order_product", 
+	joinColumns = @JoinColumn(name = "order_id"),
+	inverseJoinColumns = @JoinColumn(name = "product_id"))
+	private Set<Product> products = new HashSet<>();
 
 	public Order() {
 	}
 
-	public Order(Long id, Instant moment,Double totalValue, OrderStatus orderStatus, Client client) {
+	public Order(Long id, Instant moment, Double totalValue, OrderStatus orderStatus, Client client) {
 		super();
 		this.id = id;
 		this.moment = moment;
 		this.totalValue = totalValue;
 		setOrderStatus(orderStatus);
-		this.client = client;		
+		this.client = client;
 	}
 
 	public Long getId() {
@@ -65,8 +68,7 @@ public class Order implements Serializable {
 	public void setMoment(Instant moment) {
 		this.moment = moment;
 	}
-	
-	
+
 	public Double getTotalValue() {
 		return totalValue;
 	}
@@ -91,12 +93,12 @@ public class Order implements Serializable {
 		this.client = client;
 	}
 
-	public Set<OrderItem> getItems() {
-		return items;
+	public Set<Product> getProducts() {
+		return products;
 	}
 
-	public void setItems(Set<OrderItem> items) {
-		this.items = items;
+	public void setProducts(Set<Product> products) {
+		this.products = products;
 	}
 
 	@Override

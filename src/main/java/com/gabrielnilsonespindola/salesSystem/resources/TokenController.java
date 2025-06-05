@@ -2,7 +2,6 @@ package com.gabrielnilsonespindola.salesSystem.resources;
 
 import java.time.Instant;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -13,7 +12,6 @@ import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.gabrielnilsonespindola.salesSystem.entities.Role;
 import com.gabrielnilsonespindola.salesSystem.repositories.UserRepository;
 import com.gabrielnilsonespindola.salesSystem.resources.dto.LoginRequest;

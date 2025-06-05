@@ -1,54 +1,46 @@
 package com.gabrielnilsonespindola.salesSystem.dto;
 
 import java.io.Serializable;
-
+import java.time.Instant;
 import com.gabrielnilsonespindola.salesSystem.entities.Client;
 import com.gabrielnilsonespindola.salesSystem.entities.Order;
-import com.gabrielnilsonespindola.salesSystem.entities.OrderItem;
 import com.gabrielnilsonespindola.salesSystem.entities.Product;
 import com.gabrielnilsonespindola.salesSystem.entities.enums.OrderStatus;
-import com.gabrielnilsonespindola.salesSystem.pk.OrderItemPK;
 
 public class ProductSaleDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private OrderItemPK id;
+	private Instant moment;
 	private Double price;
-	private Integer quantity;
 	private Integer stockQuantity;
-	private Client clientId;
-	private Order orderId;
-	private Product productId;
-	private OrderItem orderItem;
-	private OrderStatus orderItemStatus;
+	private Long clientId;
+	private Long orderId;
+	private Long productId;
+	private OrderStatus orderStatus;
 	private Double totalValue;
-	private String cpf;
 
 	public ProductSaleDTO() {
 	}
 
-	public ProductSaleDTO(OrderItemPK orderItemPK, OrderItem orderItem, Order order) {
-		id = orderItem.getId();
-		price = orderItem.getPrice();
-		quantity = orderItem.getQuantity();		
-		orderId = orderItemPK.getOrder();
-		productId = orderItemPK.getProduct();
-		this.clientId = clientId;
-		this.stockQuantity = stockQuantity;
-		this.orderItemStatus = orderItemStatus;
-		this.totalValue = totalValue;
-		this.cpf = cpf;
-		
+	public ProductSaleDTO(Order order, Client client, Product product, OrderStatus orderStatus) {
+		this.moment = moment;
+		clientId = client.getId();
+		orderId = order.getId();
+		productId = product.getId();
+		stockQuantity = product.getStockQuantity();
+		price = product.getPrice();
+		totalValue = order.getTotalValue();
+		this.orderStatus = orderStatus;
 
 	}
 
-	public OrderItemPK getId() {
-		return id;
+	public Instant getMoment() {
+		return moment;
 	}
 
-	public void setId(OrderItemPK id) {
-		this.id = id;
+	public void setMoment(Instant moment) {
+		this.moment = moment;
 	}
 
 	public Double getPrice() {
@@ -59,52 +51,44 @@ public class ProductSaleDTO implements Serializable {
 		this.price = price;
 	}
 
-	public Integer getQuantity() {
-		return quantity;
+	public Integer getStockQuantity() {
+		return stockQuantity;
 	}
 
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
+	public void setStockQuantity(Integer stockQuantity) {
+		this.stockQuantity = stockQuantity;
 	}
 
-	public Client getClientId() {
+	public Long getClientId() {
 		return clientId;
 	}
 
-	public void setClientId(Client clientId) {
+	public void setClientId(Long clientId) {
 		this.clientId = clientId;
 	}
 
-	public Order getOrderId() {
+	public Long getOrderId() {
 		return orderId;
 	}
 
-	public void setOrderId(Order orderId) {
+	public void setOrderId(Long orderId) {
 		this.orderId = orderId;
 	}
 
-	public Product getProductId() {
+	public Long getProductId() {
 		return productId;
 	}
 
-	public void setProductId(Product productId) {
+	public void setProductId(Long productId) {
 		this.productId = productId;
 	}
 
-	public OrderStatus getOrderItemStatus() {
-		return orderItemStatus;
+	public OrderStatus getOrderStatus() {
+		return orderStatus;
 	}
 
-	public void setOrderItemStatus(OrderStatus orderItemStatus) {
-		this.orderItemStatus = orderItemStatus;
-	}
-
-	public OrderItem getOrderItem() {
-		return orderItem;
-	}
-
-	public void setOrderItem(OrderItem orderItem) {
-		this.orderItem = orderItem;
+	public void setOrderStatus(OrderStatus orderStatus) {
+		this.orderStatus = orderStatus;
 	}
 
 	public Double getTotalValue() {
@@ -114,23 +98,5 @@ public class ProductSaleDTO implements Serializable {
 	public void setTotalValue(Double totalValue) {
 		this.totalValue = totalValue;
 	}
-
-	public Integer getStockQuantity() {
-		return stockQuantity;
-	}
-
-	public void setStockQuantity(Integer stockQuantity) {
-		this.stockQuantity = stockQuantity;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-	
-	
 
 }

@@ -2,7 +2,6 @@ package com.gabrielnilsonespindola.salesSystem.entities;
 
 import java.io.Serializable;
 import java.util.Objects;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +21,7 @@ public class Role implements Serializable {
 	private Long roleId;
 
 	private String name;
-	
+
 	public Role() {
 	}
 
@@ -64,30 +63,23 @@ public class Role implements Serializable {
 		Role other = (Role) obj;
 		return Objects.equals(name, other.name);
 	}
-	
-	
-	 public enum Values {
 
-	        admin(1L),
-	        basic(2L);
+	public enum Values {
 
-	        long roleId;
+		admin(1L), basic(2L);
 
-	        Values(){	        	
-	        }
-	        
-	        Values(long roleId) {
-	            this.roleId = roleId;
-	        }
+		long roleId;
 
-	        public long getRoleId() {
-	            return roleId;
-	        }
-		
-		
-		
+		Values() {
+		}
+
+		Values(long roleId) {
+			this.roleId = roleId;
+		}
+
+		public long getRoleId() {
+			return roleId;
+		}
 	}
-	
-	
 
 }

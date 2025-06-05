@@ -2,14 +2,11 @@ package com.gabrielnilsonespindola.salesSystem.services;
 
 import java.util.List;
 import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
 import com.gabrielnilsonespindola.salesSystem.dto.UserDTO;
 import com.gabrielnilsonespindola.salesSystem.entities.Role;
 import com.gabrielnilsonespindola.salesSystem.entities.User;

@@ -1,15 +1,11 @@
 package com.gabrielnilsonespindola.salesSystem.entities;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,11 +19,8 @@ public class Product implements Serializable {
 	private String name;
 	private Double price;
 	private Integer stockQuantity;
-	
-	@OneToMany(mappedBy = "id.product")
-	private Set<OrderItem> orderitems = new HashSet<>();
-	
-	public Product () {
+
+	public Product() {
 	}
 
 	public Product(Long id, String name, Double price, Integer stockQuantity) {
@@ -69,15 +62,6 @@ public class Product implements Serializable {
 	public void setStockQuantity(Integer stockQuantity) {
 		this.stockQuantity = stockQuantity;
 	}
-	
-	
-	public Set<OrderItem> getOrderitems() {
-		return orderitems;
-	}
-
-	public void setOrderitems(Set<OrderItem> orderitems) {
-		this.orderitems = orderitems;
-	}
 
 	@Override
 	public int hashCode() {
@@ -95,7 +79,5 @@ public class Product implements Serializable {
 		Product other = (Product) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
 
 }

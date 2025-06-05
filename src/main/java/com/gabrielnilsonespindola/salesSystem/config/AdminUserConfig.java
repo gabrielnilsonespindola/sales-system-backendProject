@@ -8,7 +8,6 @@ import com.gabrielnilsonespindola.salesSystem.entities.User;
 import com.gabrielnilsonespindola.salesSystem.entities.Role;
 import com.gabrielnilsonespindola.salesSystem.repositories.RoleRepository;
 import com.gabrielnilsonespindola.salesSystem.repositories.UserRepository;
-
 import jakarta.transaction.Transactional;
 
 @Configuration
