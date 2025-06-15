@@ -12,12 +12,14 @@ import br.com.caelum.stella.ValidationMessage;
 import br.com.caelum.stella.validation.CPFValidator;
 import jakarta.transaction.Transactional;
 
-
 @Service
 public class ClientService {
 
 	@Autowired
 	private ClientRepository clientRepository;
+
+	@Autowired
+	CPFValidator cpfValidator;
 
 	public List<Client> findAll() {
 		return clientRepository.findAll();
@@ -39,10 +41,9 @@ public class ClientService {
 	@Transactional
 	public boolean validation(String cpf) {
 
-		CPFValidator cpfValidator = new CPFValidator();
 		List<ValidationMessage> erros = cpfValidator.invalidMessagesFor(cpf);
 		if (erros.size() > 0) {
-		   throw new ObjectNotFoundException("CPF INVALIDO");
+			throw new ObjectNotFoundException("CPF INVALIDO");
 		} else {
 			return true;
 		}
@@ -54,15 +55,14 @@ public class ClientService {
 		var cpfFromDb = clientRepository.findByCpf(objDtO.getCpf());
 
 		if (!validation(cpf) && cpfFromDb.isPresent()) {
-		   throw new ObjectNotFoundException("CPF inválido ou ja cadastrado, registro não permitido.");
-		} 			
-		else {
+			throw new ObjectNotFoundException("CPF inválido ou ja cadastrado, registro não permitido.");
+		} else {
 			Client client = new Client();
 			client.setName(objDtO.getName());
 			client.setCpf(objDtO.getCpf());
 			client.setEmail(objDtO.getEmail());
 			return clientRepository.save(client);
-			}
+		}
 	}
 
 }
