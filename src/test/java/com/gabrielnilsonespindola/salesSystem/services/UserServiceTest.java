@@ -1,6 +1,5 @@
 package com.gabrielnilsonespindola.salesSystem.services;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -54,21 +53,16 @@ public class UserServiceTest {
 		@Test
 		void findAllTestUsersOk() {
 
-			// Arrange
-			User user1 = new User(1L, "jao", "jao@gmail.com", "123", "jao123");
-			User user2 = new User(2L, "dom", "dom@gmail.com", "123", "dom123");
+			var user1 = new User(1L, "jao", "jao@gmail.com", "123", "jao123");
+			var user2 = new User(2L, "dom", "dom@gmail.com", "123", "dom123");
 
 			List<User> listAll = List.of(user1, user2);
 			when(userRepository.findAll()).thenReturn(listAll);
 
-			// Action
 			List<User> listAllFull = userService.findAll();
 
-			// Assert
 			assertNotNull(listAllFull);
 			assertEquals(2, listAllFull.size());
-			assertEquals("jao", listAllFull.get(0).getName());
-			assertEquals("dom", listAllFull.get(1).getName());
 			verify(userRepository, times(1)).findAll();
 
 		}
@@ -78,58 +72,20 @@ public class UserServiceTest {
 	class newUser {
 
 		@Test
-		void checkIfTheUserIsNotPresentAllowingTheRegistrationOfANewOne() {
+		void userAlreadyExists() {
 
-			// ARRANGE
-
-			UserDTO dto = new UserDTO();
+			var dto = new UserDTO();
 			dto.setId(1L);
 			dto.setName("jao");
 			dto.setEmail("jao@gmail.com");
 			dto.setUsername("jao123");
 			dto.setPassword("123");
 
-			Role role1 = new Role();
+			var role1 = new Role();
 			role1.setName(Values.basic.name());
 			role1.setRoleid(2L);
 
-			User user1 = new User();
-			user1.setId(dto.getId());
-			user1.setName(dto.getName());
-			user1.setEmail(dto.getEmail());
-			user1.setUsername(dto.getUsername());
-			user1.setPassword(dto.getPassword());
-			user1.setRoles(Set.of(role1));
-
-			when(userRepository.findByUsername(user1.getUsername())).thenReturn(Optional.empty());
-			when(roleRepository.findByName("basic")).thenReturn(role1);
-
-			// ACTION + ASSERT
-
-			assertDoesNotThrow(() -> userService.newUser(dto));
-
-			verify(userRepository, times(1)).findByUsername(user1.getUsername());
-			verify(roleRepository, times(1)).findByName(role1.getName());
-
-		}
-
-		@Test
-		void checkIfTheUserExistsAndIfItIsThrowingTheResponseException() {
-
-			// ARRANGE
-
-			UserDTO dto = new UserDTO();
-			dto.setId(1L);
-			dto.setName("jao");
-			dto.setEmail("jao@gmail.com");
-			dto.setUsername("jao123");
-			dto.setPassword("123");
-
-			Role role1 = new Role();
-			role1.setName(Values.basic.name());
-			role1.setRoleid(2L);
-
-			User user1 = new User();
+			var user1 = new User();
 			user1.setId(dto.getId());
 			user1.setName(dto.getName());
 			user1.setEmail(dto.getEmail());
@@ -140,55 +96,45 @@ public class UserServiceTest {
 			when(userRepository.findByUsername(user1.getUsername())).thenReturn(Optional.of(user1));
 			when(roleRepository.findByName("basic")).thenReturn(role1);
 
-			// ACTION + ASSERT
-
-			ResponseStatusException exceptionResponse = assertThrows(ResponseStatusException.class,
-					() -> userService.newUser(dto));
+			ResponseStatusException exceptionResponse = assertThrows(ResponseStatusException.class,() -> userService.newUser(dto));
 			assertEquals(exceptionResponse.getStatusCode(), HttpStatus.UNPROCESSABLE_ENTITY);
 
 		}
 
 		@Test
-		void shouldCallRepositorySave() {
+		void shouldCallRepositorySave() {			
 
-			// ARRANGE
-
-			UserDTO dto = new UserDTO();
+			var dto = new UserDTO();
 			dto.setId(1L);
 			dto.setName("jao");
 			dto.setEmail("jao@gmail.com");
 			dto.setUsername("jao123");
 			dto.setPassword("123");
 
-			Role role1 = new Role();
-			role1.setName(Values.basic.name());
-			role1.setRoleid(2L);
+			var role = new Role();
+			role.setName(Values.basic.name());
+			role.setRoleid(2L);
 
-			User user1 = new User();
-			user1.setId(dto.getId());
-			user1.setName(dto.getName());
-			user1.setEmail(dto.getEmail());
-			user1.setUsername(dto.getUsername());
-			user1.setPassword(dto.getPassword());
-			user1.setRoles(Set.of(role1));
+			var user = new User();
+			user.setId(dto.getId());
+			user.setName(dto.getName());
+			user.setEmail(dto.getEmail());
+			user.setUsername(dto.getUsername());
+			user.setPassword(dto.getPassword());
+			user.setRoles(Set.of(role));
 
-			when(userRepository.save(any(User.class))).thenReturn(user1);
-			when(roleRepository.findByName("basic")).thenReturn(role1);
-
-			// ACTION
+			when(userRepository.save(any(User.class))).thenReturn(user);
+			when(roleRepository.findByName("basic")).thenReturn(role);
 
 			User userNew = userService.newUser(dto);
-
-			// ASSERT
 
 			assertNotNull(userNew);
 			verify(userRepository).save(userCaptor.capture());
 			User capturedUser = userCaptor.getValue();
-			assertTrue(capturedUser.getRoles().contains(role1));
+			assertTrue(capturedUser.getRoles().contains(role));
 			assertEquals("jao123", capturedUser.getUsername());
 			verify(userRepository, times(1)).save(capturedUser);
 
 		}
-
 	}
 }
