@@ -16,6 +16,8 @@
 
 ● Venda somente se o estoque nao estiver vazio e cliente cadastrado.
 
+● Testes de Unidade aplicado a camada "Service" do projeto, validando regras de negócio.
+
 # Tecnologias Utilizadas 
 
 ● Java 21
@@ -31,6 +33,8 @@
 ● H2 DB
 
 ● Maven
+
+● JUnit 5 / Mockito
 
 ● Postman
 
