@@ -9,6 +9,9 @@ import com.gabrielnilsonespindola.salesSystem.entities.Product;
 import com.gabrielnilsonespindola.salesSystem.repositories.ProductRepository;
 import com.gabrielnilsonespindola.salesSystem.services.exceptions.ObjectNotFoundException;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class ProductService {
 
@@ -20,8 +23,11 @@ public class ProductService {
 	}
 
 	public Product findById(Long id) {
-		Optional<Product> obj = productRepository.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
+		Optional<Product> obj = productRepository.findById(id);		
+		return obj.orElseThrow(() -> {
+	        log.error("Produto com ID {} não encontrado", id);
+	        return new ObjectNotFoundException("Objeto não encontrado");
+	    });
 	}
 
 	public Product insertProduct(Product obj) {

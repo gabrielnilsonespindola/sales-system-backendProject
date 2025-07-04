@@ -16,7 +16,9 @@ import com.gabrielnilsonespindola.salesSystem.dto.ProductSaleDTO;
 import com.gabrielnilsonespindola.salesSystem.entities.Order;
 import com.gabrielnilsonespindola.salesSystem.services.OrderService;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping(value = "/orders")
 public class OrderResource {
@@ -27,14 +29,20 @@ public class OrderResource {
 	@GetMapping
 	@PreAuthorize("hasAuthority('SCOPE_admin') or hasAuthority('SCOPE_basic') ")
 	public ResponseEntity<List<Order>> findAll() {
+		log.info("Inicio do Metodo findAll");
 		List<Order> list = orderService.findAll();
+		log.info("Chamada retorno da lista de Orders");
+		log.info("Final do metodo findAll");
 		return ResponseEntity.ok().body(list);
 	}
 
 	@GetMapping(value = "/{id}")
 	@PreAuthorize("hasAuthority('SCOPE_admin') or hasAuthority('SCOPE_basic') ")
 	public ResponseEntity<Order> findById(@PathVariable Long id) {
+		log.info("Inicio do Metodo findById");
 		Order obj = orderService.findById(id);
+		log.info("Retorno Order por Id {}", id);
+		log.info("Final do metodo findById");
 		return ResponseEntity.ok().body(obj);
 	}
 
@@ -42,8 +50,11 @@ public class OrderResource {
 	@PreAuthorize("hasAuthority('SCOPE_admin') or hasAuthority('SCOPE_basic') ")
 	@Transactional
 	public ResponseEntity<ProductSaleDTO> newOrder(@RequestBody ProductSaleDTO dto) {
+		log.info("Inicio do Metodo newOrder");
 		Order obj = orderService.newOrder(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		log.info("Retorno metodo newOrder {}",uri);	
+		log.info("Final do metodo newOrder");
 		return ResponseEntity.created(uri).build();
 	}
 }

@@ -13,6 +13,9 @@ import com.gabrielnilsonespindola.salesSystem.repositories.OrderRepository;
 import com.gabrielnilsonespindola.salesSystem.repositories.ProductRepository;
 import com.gabrielnilsonespindola.salesSystem.services.exceptions.ObjectNotFoundException;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class OrderService {
 
@@ -32,7 +35,10 @@ public class OrderService {
 
 	public Order findById(Long id) {
 		Optional<Order> obj = orderRepository.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
+		return obj.orElseThrow(() -> {
+	        log.error("Order com ID {} não encontrado", id);
+	        return new ObjectNotFoundException("Objeto não encontrado");
+	    });
 	}
 
 	public Order newOrder(ProductSaleDTO objDTO) {
@@ -47,7 +53,7 @@ public class OrderService {
 			var product = productFromDb.get();
 			
 			if(product.getStockQuantity() < 1) {	
-				
+			log.warn("Produto sem estoque, nao permitido criar ordem de serviço. {}" , product.getStockQuantity());	
 			throw new ObjectNotFoundException("Quantidade em estoque indisponivel");				
 			}			
 			
@@ -67,6 +73,7 @@ public class OrderService {
 			return orderRepository.save(order);				
 		} 
 		else {
+			log.warn("Produto não localizado {} e/ou sem cliente cadastrado {}" , productFromDb.isPresent() , clientFromDb.isPresent());
 			throw new ObjectNotFoundException("Produto não localizado e/ou sem cliente cadastrado");
 		}	
 	}	

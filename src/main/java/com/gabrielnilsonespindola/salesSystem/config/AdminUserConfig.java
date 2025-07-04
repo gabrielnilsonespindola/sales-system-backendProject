@@ -9,7 +9,9 @@ import com.gabrielnilsonespindola.salesSystem.entities.Role;
 import com.gabrielnilsonespindola.salesSystem.repositories.RoleRepository;
 import com.gabrielnilsonespindola.salesSystem.repositories.UserRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Configuration
 public class AdminUserConfig implements CommandLineRunner {
 
@@ -26,6 +28,7 @@ public class AdminUserConfig implements CommandLineRunner {
 	@Override
 	@Transactional
 	public void run(String... args) throws Exception {
+		log.info("Inicio login e registro Admin");
 
 		var roleAdmin = roleRepository.findByName(Role.Values.admin.name());
 
@@ -39,6 +42,7 @@ public class AdminUserConfig implements CommandLineRunner {
 			user.setPassword(bCryptPasswordEncoder.encode("123"));
 			user.setRoles(Set.of(roleAdmin));
 			userRepository.save(user);
+			log.info("Fim login e registro Admin");
 			}
 		);
 	}

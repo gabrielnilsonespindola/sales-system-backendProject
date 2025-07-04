@@ -17,6 +17,9 @@ import com.gabrielnilsonespindola.salesSystem.repositories.UserRepository;
 import com.gabrielnilsonespindola.salesSystem.resources.dto.LoginRequest;
 import com.gabrielnilsonespindola.salesSystem.resources.dto.LoginResponse;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 public class TokenController {
 	
@@ -38,11 +41,13 @@ public class TokenController {
 	
 	 @PostMapping("/login")
 	    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+		 log.info("Inicio login");
 
 	        var user = userRepository.findByUsername(loginRequest.username());
 	        
 	        if(user.isEmpty() || !user.get().isLoginCorrect(loginRequest , bCryptPasswordEncoder)) {
-	        	throw new BadCredentialsException("user or password is invalid");
+	        	log.warn("Login não efetuado, usuario ou senha invalidos");
+	        	throw new BadCredentialsException("user or password is invalid");	        	
 	        }
 	        
 	        var scopes = user.get().getRoles()
@@ -63,9 +68,9 @@ public class TokenController {
 	                .build();
 	        
 	        var  jwtValue = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
-	        		
-	        return ResponseEntity.ok(new LoginResponse(jwtValue , expiresIn));
-	      
+	        
+	        log.info("Login efetuado com Sucesso");	        		
+	        return ResponseEntity.ok(new LoginResponse(jwtValue , expiresIn));	      
 		
 	}
 

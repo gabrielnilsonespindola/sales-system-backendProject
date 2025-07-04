@@ -13,6 +13,9 @@ import com.gabrielnilsonespindola.salesSystem.entities.User;
 import com.gabrielnilsonespindola.salesSystem.repositories.RoleRepository;
 import com.gabrielnilsonespindola.salesSystem.repositories.UserRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class UserService {
 
@@ -35,6 +38,7 @@ public class UserService {
 
 		var userFromDb = userRepository.findByUsername(dto.getUsername());
 		if (userFromDb.isPresent()) {
+			log.warn("Tentativa de cadastro de usuario com USERNAME ja existente. {}" , dto.getUsername());
 			throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 		var user = new User();

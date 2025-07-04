@@ -11,7 +11,9 @@ import com.gabrielnilsonespindola.salesSystem.services.exceptions.ObjectNotFound
 import br.com.caelum.stella.ValidationMessage;
 import br.com.caelum.stella.validation.CPFValidator;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class ClientService {
 
@@ -27,10 +29,13 @@ public class ClientService {
 
 	public Client findById(Long id) {
 		Optional<Client> obj = clientRepository.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
+		return obj.orElseThrow(() -> {
+	        log.error("Cliente com ID {} não encontrado", id);
+	        return new ObjectNotFoundException("Objeto/Client não encontrado");
+	    });
 	}
 
-	public Client insertClient(Client obj) {
+	public Client insertClient(Client obj) {		
 		return clientRepository.save(obj);
 	}
 
@@ -43,6 +48,7 @@ public class ClientService {
 
 		List<ValidationMessage> erros = cpfValidator.invalidMessagesFor(cpf);
 		if (erros.size() > 0) {
+			log.warn("CPF INVALIDO {}" , cpf);
 			throw new ObjectNotFoundException("CPF INVALIDO");
 		} else {
 			return true;
@@ -55,6 +61,7 @@ public class ClientService {
 		var cpfFromDb = clientRepository.findByCpf(objDtO.getCpf());
 
 		if (!validation(cpf) && cpfFromDb.isPresent()) {
+			log.warn("CPF INVALIDO OU JA CADASTRADO {}" , cpf);
 			throw new ObjectNotFoundException("CPF inválido ou ja cadastrado, registro não permitido.");
 		} else {
 			Client client = new Client();
