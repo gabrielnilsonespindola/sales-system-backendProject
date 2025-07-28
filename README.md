@@ -38,6 +38,13 @@
 
 ● Postman
 
+● Docker
+
+● Docker Desktop
+
+● GitHub Actions Pipeline CI
+
+
 # Como executar o projeto
 # Back end
 
@@ -58,6 +65,10 @@ cd salesSystem
 ● Executar o projeto
 
 ./mvnw spring-boot:run
+
+● SEGUNDA OPÇÃO : 
+
+Utilizar docker compose no terminal na pasta diretorio do projeto para subir aplicação , e para isto é necessário ter o Docker Desktop instalado.
 
 # Importando a collection do Postman
 Para facilitar os testes dos endpoints da API, este projeto inclui uma collection do Postman.
