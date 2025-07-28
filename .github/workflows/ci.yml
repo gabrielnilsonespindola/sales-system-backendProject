@@ -28,4 +28,4 @@ jobs:
       run: mvn clean install 
 
     - name: Build Docker image
-      run: docker build -t meuapp:latest .
+      run: docker build -f dockerSalesSystem/Dockerfile -t meuapp:latest .
