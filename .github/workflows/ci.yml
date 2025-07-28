@@ -1,4 +1,4 @@
-name: Java CI
+name: Java CI + Docker
 
 on:
   push:
@@ -24,5 +24,8 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
 
-    - name: Build com Maven e rodar testes
+    - name: Build com Maven e teste
       run: mvn clean install 
+
+    - name: Build Docker image
+      run: docker build -t meuapp:latest .
